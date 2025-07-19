@@ -3,12 +3,15 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 import { useDispatch } from 'react-redux'
-import { setTokens } from '../redux/slices/authSlice'
 import styles from './LoginPage.module.css'
+import { setTokens } from '../redux/slices/authSlice'
+
 
 function LoginPage() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -46,13 +49,14 @@ function LoginPage() {
 
     return (
     <div className={styles.container}>
+
       <h2 className={styles.title}>Login</h2>
 
       {error && <p className={styles.errorMessage}>{error}</p>}
 
-      <form onSubmit={handleLogin} className={styles.form}>
+      <form onSubmit={handleLogin} className={styles.form} noValidate>
         <input
-          type="email"
+          type="text"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}

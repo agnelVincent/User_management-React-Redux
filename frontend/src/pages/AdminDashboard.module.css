@@ -92,3 +92,18 @@ h2 {
 .logoutBtn:hover {
   background-color: #5a6268;
 }
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.searchInput {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  width: 220px;
+}

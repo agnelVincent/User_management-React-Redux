@@ -18,7 +18,8 @@ const initialState = {
     refreshToken : refresh || null,
     isAuthenticated : !!access,
     isAdmin : decoded?.is_staff || false,
-    userId : decoded?.user_id || null
+    userId : decoded?.user_id || null,
+    inputlist : []
 }
 
 const authSlice = createSlice({
@@ -42,9 +43,9 @@ const authSlice = createSlice({
             state.userId = null,
             localStorage.removeItem('accessToken'),
             localStorage.removeItem('refreshToken')
-        }
+        },
     }
 })
 
-export const {setTokens , logout} = authSlice.actions
+export const {setTokens , logout } = authSlice.actions
 export default authSlice.reducer

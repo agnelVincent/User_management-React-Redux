@@ -13,6 +13,7 @@ function RegisterPage() {
   });
 
   const [errors, setErrors] = useState('');
+  const [success, setSuccess] = useState('');
 
   const validateForm = () => {
     const { username, email, password, password2 } = formData;
@@ -48,6 +49,7 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors('');
+    setSuccess('');
 
     const validationError = validateForm();
     if (validationError) {
@@ -57,8 +59,8 @@ function RegisterPage() {
 
     try {
       await api.post('register/', formData);
-      alert('Account created successfully!');
-      navigate('/login');
+      setSuccess('Account created successfully! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       const res = err.response;
       if (res && res.data) {
@@ -78,8 +80,9 @@ function RegisterPage() {
       <h2 className={styles.title}>Register</h2>
 
       {errors && <p className={styles.errorMessage}>{errors}</p>}
+      {success && <p className={styles.successMessage}>{success}</p>}
 
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <input
           type="text"
           name="username"
@@ -90,7 +93,7 @@ function RegisterPage() {
           className={styles.input}
         />
         <input
-          type="email"
+          type="text"
           name="email"
           value={formData.email}
           placeholder="Email"

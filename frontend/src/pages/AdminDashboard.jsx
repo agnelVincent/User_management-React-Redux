@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux'
 import styles from './AdminDashboard.module.css';
 
 
+
 function AdminDashboard() {
     const {accessToken , isAdmin} = useSelector(state => state.auth)
     const [users, setUsers] = useState([])
     const [errors , setErrors] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -42,6 +44,11 @@ function AdminDashboard() {
         }
     }
 
+    const filteredUsers = users.filter(user =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const handleLogout = () => {
         dispatch(logout())
         navigate('/login')
@@ -56,23 +63,29 @@ function AdminDashboard() {
         + Create New User
       </button>
 
+      <input
+          type="text"
+          placeholder="Search by username or email"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+      />
+
       <table className={styles.table}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Admin</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {filteredUsers.map(user => (
             <tr key={user.id}>
               <td>{user.id}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
-              <td>{user.is_staff ? 'Yes' : 'No'}</td>
               <td>
                 <button className={styles.editBtn} onClick={() => navigate(`/admin/edit/${user.id}`)}>
                   Edit
@@ -83,6 +96,13 @@ function AdminDashboard() {
               </td>
             </tr>
           ))}
+          {filteredUsers.length === 0 && (
+            <tr>
+              <td colSpan="4" style={{ textAlign: 'center' }}>
+                No users found.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
 
